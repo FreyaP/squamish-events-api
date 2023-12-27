@@ -6,13 +6,13 @@ require("dotenv").config();
 const PORT = process.env.PORT;
 
 const userRoutes = require("./routes/user-routes");
-//const eventRoutes = require("./routes/event-routes");
+const eventRoutes = require("./routes/event-routes");
 
 // app.use(cors());
 // app.use(express.json());
 
 app.use("/users", userRoutes);
-// app.use("/events", eventRoutes);
+app.use("/events", eventRoutes);
 
 //to test get request to localhost:8080
 app.get("/", (_req, res) => {
