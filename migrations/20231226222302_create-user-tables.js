@@ -22,7 +22,7 @@ exports.up = function (knex) {
       table.string("description", 1000).notNullable();
       table.string("category").notNullable();
       table.date("date").notNullable();
-      table.binary("image").notNullable();
+      table.string("image").notNullable();
       table.string("ticket_link").notNullable();
       table
         .integer("user_id")

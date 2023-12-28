@@ -45,8 +45,53 @@ const getEventsByHostId = async (req, res) => {
   }
 };
 
+//TODO: add dynamic user_id
+const postEvent = async (req, res) => {
+  const {
+    event_name,
+    category,
+    date,
+    description,
+    ticket_link,
+    venue,
+    user_id,
+  } = req.body;
+
+  const imageName = req.file.filename;
+
+  // Check if values exist
+  if (!event_name || !category || !date || !description || !venue || !user_id) {
+    return res.status(400).json({ message: "Fill in missing fields" });
+  }
+  try {
+    // Check that user/host exists
+    const userExists = await knex("user").where({ id: user_id }).first();
+    if (!userExists) {
+      return res.status(400).json({
+        message: "User ID not found, cannot post event to this user/host",
+      });
+    }
+    // Insert new event into database
+    const [newEventId] = await knex("event").insert({
+      event_name,
+      venue,
+      description,
+      date,
+      category,
+      ticket_link,
+      user_id,
+      image: imageName,
+    });
+
+    const newEvent = await knex("event").where({ id: newEventId }).first();
+    res.status(200).json(newEvent);
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
   getEvents,
   getEventById,
   getEventsByHostId,
+  postEvent,
 };
