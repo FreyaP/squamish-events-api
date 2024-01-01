@@ -45,7 +45,7 @@ const getEventsByHostId = async (req, res) => {
   }
 };
 
-//TODO: add dynamic user_id
+//TODO: add dynamic user_id when login feature
 const postEvent = async (req, res) => {
   const {
     event_name,
@@ -89,9 +89,72 @@ const postEvent = async (req, res) => {
     console.log(error);
   }
 };
+
+const updateEventById = async (req, res) => {
+  const {
+    event_name,
+    category,
+    date,
+    description,
+    ticket_link,
+    venue,
+    user_id,
+  } = req.body;
+
+  let imageName;
+  if (req.file) {
+    imageName = req.file.filename;
+  } else if (!req.file) {
+    imageName = req.body.image;
+  }
+
+  // const imageName = req.file?.filename;
+
+  if (
+    !category ||
+    !date ||
+    !description ||
+    !event_name ||
+    !ticket_link ||
+    !user_id ||
+    !venue
+  ) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+  try {
+    const rowsUpdated = await knex("event")
+      .where({ id: req.params.id })
+      .update({
+        event_name,
+        venue,
+        description,
+        date,
+        category,
+        ticket_link,
+        user_id,
+        image: imageName,
+      });
+
+    // Checking that event exists and was updated
+    if (rowsUpdated === 0) {
+      return res
+        .status(404)
+        .json({ message: `Event with ID: ${req.params.id} not found` });
+    }
+    // getting updated event
+    const updatedEvent = await knex("event").where("id", req.params.id);
+
+    res.status(200).json(updatedEvent[0]);
+  } catch (error) {
+    res.status(500).json({
+      message: `Unable to update event with ID: ${req.params.id}. ${error}`,
+    });
+  }
+};
 module.exports = {
   getEvents,
   getEventById,
   getEventsByHostId,
   postEvent,
+  updateEventById,
 };
