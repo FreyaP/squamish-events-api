@@ -9,7 +9,8 @@ router
 router
   .route("/:id")
   .get(eventController.getEventById)
-  .put(upload.single("image"), eventController.updateEventById);
+  .put(upload.single("image"), eventController.updateEventById)
+  .delete(eventController.deleteEventById);
 router.route("/user/:id").get(eventController.getEventsByHostId);
 
 module.exports = router;

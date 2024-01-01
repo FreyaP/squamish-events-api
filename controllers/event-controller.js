@@ -151,10 +151,29 @@ const updateEventById = async (req, res) => {
     });
   }
 };
+
+const deleteEventById = async (req, res) => {
+  try {
+    const eventId = req.params.id;
+
+    const foundEvent = await knex("event").where("id", eventId).first();
+
+    if (!foundEvent) {
+      return res.status(404).json({ message: `Event not found` });
+    }
+    await knex("event").where("id", eventId).del();
+    return res.status(204).send(`Event deleted`);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: `Error deleting event`, error: error.message });
+  }
+};
 module.exports = {
   getEvents,
   getEventById,
   getEventsByHostId,
   postEvent,
   updateEventById,
+  deleteEventById,
 };
