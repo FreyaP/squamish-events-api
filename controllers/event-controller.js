@@ -108,8 +108,6 @@ const updateEventById = async (req, res) => {
     imageName = req.body.image;
   }
 
-  // const imageName = req.file?.filename;
-
   if (
     !category ||
     !date ||
