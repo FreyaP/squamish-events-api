@@ -55,17 +55,17 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ message: `Missing required fields` });
+    return res.status(400).send(`Missing required fields`);
   }
   const user = await knex("user").where({ email }).first();
 
   if (!user) {
-    return res.status(400).json({ message: `No user found` });
+    return res.status(400).send(`User not found`);
   }
 
   //validate password
   if (!bcrypt.compareSync(password, user.password)) {
-    return res.status(400).json({ message: `Invalid Password` });
+    return res.status(400).send(`Invalid Password`);
   }
 
   //Generate JWT
@@ -73,7 +73,7 @@ const loginUser = async (req, res) => {
     { email: user.email, id: user.id },
     process.env.JWT_SECRET
   );
-  console.log(token);
+
   res.json({ token, id: user.id });
 };
 

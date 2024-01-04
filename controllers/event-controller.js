@@ -33,7 +33,7 @@ const getEventsByHostId = async (req, res) => {
 
     if (eventsByHost.length === 0) {
       return res.status(400).json({
-        message: `No events found connected to the user ID: ${req.params.id}`,
+        message: `You have not posted any events`,
       });
     }
     res.status(200).json(eventsByHost);
@@ -45,7 +45,6 @@ const getEventsByHostId = async (req, res) => {
   }
 };
 
-//TODO: add dynamic user_id when login feature
 const postEvent = async (req, res) => {
   const {
     event_name,
@@ -149,10 +148,21 @@ const updateEventById = async (req, res) => {
     });
   }
 };
+
+const deleteEventById = async (req, res) => {
+  try {
+    await knex("event").where("id", req.params.id).del();
+
+    res.status(204).send(`Deleted Event`);
+  } catch (error) {
+    res.status(500).json({ message: `Error accessing database`, error: error });
+  }
+};
 module.exports = {
   getEvents,
   getEventById,
   getEventsByHostId,
   postEvent,
   updateEventById,
+  deleteEventById,
 };
