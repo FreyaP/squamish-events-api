@@ -2,6 +2,7 @@ const knex = require("knex")(require("../knexfile"));
 
 const likeEvent = async (req, res) => {
   const { user_id, event_id } = req.body;
+
   //check fields exist
   if (!user_id || !event_id) {
     res.status(400).send(`No user and/or event supplied`);
@@ -51,9 +52,9 @@ const getSavedEvents = async (req, res) => {
 };
 
 const deleteFromSavedEvents = async (req, res) => {
-  const { user_id, event_id } = req.body;
+  const { event_id, user_id } = req.params;
   if (!user_id || !event_id) {
-    res.status(400).send(`No user and/or event supplied`);
+    return res.status(400).send(`No user and/or event supplied`);
   }
   try {
     await knex("saved")
@@ -62,7 +63,7 @@ const deleteFromSavedEvents = async (req, res) => {
         event_id: event_id,
       })
       .del();
-    res.status(204);
+    res.status(204).send(`Removed from saved events`);
   } catch (error) {
     res.status(400).send(`Could not delete record`);
   }
