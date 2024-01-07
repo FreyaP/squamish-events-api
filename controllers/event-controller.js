@@ -151,6 +151,7 @@ const updateEventById = async (req, res) => {
 
 const deleteEventById = async (req, res) => {
   try {
+
     const foundEvent = await knex("event").where("id", req.params.id).first();
     if (!foundEvent) {
       return res.status(404).json({ message: `Event not found` });
@@ -159,6 +160,7 @@ const deleteEventById = async (req, res) => {
     res.status(204).send(`Deleted Event`);
   } catch (error) {
     res.status(500).json({ message: `Error accessing database`, error: error });
+
   }
 };
 module.exports = {
