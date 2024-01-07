@@ -10,6 +10,11 @@ const getUsers = async (req, res) => {
     res.status(400).send(`Error retrieving Users: ${error}`);
   }
 };
+
+const getCurrentUser = async (req, res) => {
+  res.json(req.user);
+};
+
 const getUsersById = async (req, res) => {
   try {
     const user = await knex("user").where("id", req.params.id);
@@ -82,4 +87,5 @@ module.exports = {
   getUsersById,
   registerUser,
   loginUser,
+  getCurrentUser,
 };

@@ -69,8 +69,18 @@ const deleteFromSavedEvents = async (req, res) => {
   }
 };
 
+const getAllSavedRecords = async (req, res) => {
+  try {
+    const records = await knex("saved");
+    res.status(200).json(records);
+  } catch (error) {
+    res.status(404).send(`Error retrieving records: ${error}`);
+  }
+};
+
 module.exports = {
   likeEvent,
   getSavedEvents,
   deleteFromSavedEvents,
+  getAllSavedRecords,
 };

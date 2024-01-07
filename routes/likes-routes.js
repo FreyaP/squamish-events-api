@@ -1,7 +1,10 @@
 const router = require("express").Router();
 const likesController = require("../controllers/likes-controller");
 
-router.route("/").post(likesController.likeEvent);
+router
+  .route("/")
+  .post(likesController.likeEvent)
+  .get(likesController.getAllSavedRecords);
 
 router
   .route("/event/:event_id/user/:user_id")
