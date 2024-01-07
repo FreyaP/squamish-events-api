@@ -1,4 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const getUsers = async (req, res) => {
   try {
@@ -8,6 +10,11 @@ const getUsers = async (req, res) => {
     res.status(400).send(`Error retrieving Users: ${error}`);
   }
 };
+
+const getCurrentUser = async (req, res) => {
+  res.json(req.user);
+};
+
 const getUsersById = async (req, res) => {
   try {
     const user = await knex("user").where("id", req.params.id);
@@ -25,7 +32,60 @@ const getUsersById = async (req, res) => {
   }
 };
 
+const registerUser = async (req, res) => {
+  const { user_name, email, password, role } = req.body;
+
+  if (!user_name || !email || !password) {
+    return res.status(400).send("Please enter the required fields.");
+  }
+
+  const encrypted = bcrypt.hashSync(password);
+
+  const newUser = {
+    user_name,
+    email,
+    password: encrypted,
+    role,
+  };
+  // insert to database
+  try {
+    await knex("user").insert(newUser);
+    res.status(201).json({ message: `Registered new user` });
+  } catch (error) {
+    res.status(400).json({ message: `Registration failed`, error: error });
+  }
+};
+
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).send(`Missing required fields`);
+  }
+  const user = await knex("user").where({ email }).first();
+
+  if (!user) {
+    return res.status(400).send(`User not found`);
+  }
+
+  //validate password
+  if (!bcrypt.compareSync(password, user.password)) {
+    return res.status(400).send(`Invalid Password`);
+  }
+
+  //Generate JWT
+  const token = jwt.sign(
+    { email: user.email, id: user.id },
+    process.env.JWT_SECRET
+  );
+
+  res.json({ token, id: user.id });
+};
+
 module.exports = {
   getUsers,
   getUsersById,
+  registerUser,
+  loginUser,
+  getCurrentUser,
 };
