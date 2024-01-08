@@ -56,10 +56,18 @@ const postEvent = async (req, res) => {
     user_id,
   } = req.body;
 
-  const imageName = req.file.filename;
+  const imageName = req.file?.filename;
 
   // Check if values exist
-  if (!event_name || !category || !date || !description || !venue || !user_id) {
+  if (
+    !event_name ||
+    !category ||
+    !date ||
+    !description ||
+    !venue ||
+    !user_id ||
+    !imageName
+  ) {
     return res.status(400).json({ message: "Fill in missing fields" });
   }
   try {
@@ -151,7 +159,6 @@ const updateEventById = async (req, res) => {
 
 const deleteEventById = async (req, res) => {
   try {
-
     const foundEvent = await knex("event").where("id", req.params.id).first();
     if (!foundEvent) {
       return res.status(404).json({ message: `Event not found` });
@@ -160,7 +167,6 @@ const deleteEventById = async (req, res) => {
     res.status(204).send(`Deleted Event`);
   } catch (error) {
     res.status(500).json({ message: `Error accessing database`, error: error });
-
   }
 };
 module.exports = {

@@ -38,6 +38,17 @@ const registerUser = async (req, res) => {
   if (!user_name || !email || !password) {
     return res.status(400).send("Please enter the required fields.");
   }
+  try {
+    const emailExists = await knex("user").where("email", email).first();
+
+    if (emailExists) {
+      return res.status(400).json({
+        message: `Email has already been used, try logging in. If you have forgotten your password, too bad! I have not set up Forgot My Password functionality yet....`,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 
   const encrypted = bcrypt.hashSync(password);
 
