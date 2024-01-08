@@ -2,17 +2,21 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
-
-const PORT = 8080;
+const PORT = process.env.PORT;
 
 const userRoutes = require("./routes/user-routes");
 const eventRoutes = require("./routes/event-routes");
+const savedRoutes = require("./routes/likes-routes");
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/users", userRoutes);
 app.use("/events", eventRoutes);
+app.use("/saved", savedRoutes);
+
+// serve static files from images folder
+app.use("/images", express.static("./images"));
 
 //to test get request to localhost:8080
 app.get("/", (_req, res) => {

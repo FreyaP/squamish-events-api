@@ -1,0 +1,61 @@
+module.exports = [
+  {
+    id: 1,
+    event_name: "Spring Festival",
+    venue: "Downtown Junction Park",
+    description:
+      "Join us for a day of fun and celebration in the heart of the city. Live music, food, and games for everyone!",
+    category: "Music",
+    date: "2024-04-15",
+    image: "1703723510334.jpg",
+    ticket_link: "30",
+    user_id: 2,
+  },
+  {
+    id: 2,
+    event_name: "Tech Conference",
+    venue: "The Common",
+    description:
+      "Explore the latest trends in technology and attend insightful sessions by industry experts. Don't miss out on this opportunity!",
+    category: "Business",
+    date: "2024-05-20",
+    image: "1704052451445.jpg",
+    ticket_link: "5",
+    user_id: 2,
+  },
+  {
+    id: 3,
+    event_name: "Mountain Hiking Adventure",
+    venue: "Echo Lake",
+    description:
+      "Join an eager group of hikers and venture up waterfalls and trails to Echo Lake",
+    category: "Adventure",
+    date: "2024-06-10",
+    image: "1704144564915.jpg",
+    ticket_link: "Free",
+    user_id: 3,
+  },
+  {
+    id: 4,
+    event_name: "Pink Tuc Tuc Race",
+    venue: "Loggers Sports Grouns",
+    description:
+      "Race pick tuc tuc while blasting tunes and drinking smoothies",
+    category: "Miscellaneous",
+    date: "2024-07-05",
+    image: "1704152222764.jpg",
+    ticket_link: "Free",
+    user_id: 1,
+  },
+  {
+    id: 5,
+    event_name: "Sunset Sailing Sipper",
+    venue: "Howe Sound",
+    description: "Sunset sailing adventure - sip mimosas and watch the sunset",
+    category: "Adventure",
+    date: "2024-08-15",
+    image: "1704329217346.jpg",
+    ticket_link: "30",
+    user_id: 2,
+  },
+];
