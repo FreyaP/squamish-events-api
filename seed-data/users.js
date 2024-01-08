@@ -1,23 +1,25 @@
+const bcrypt = require("bcryptjs");
+
 module.exports = [
   {
     id: 1,
-    user_name: "john doe",
-    email: "john.doe@example.com",
-    password: "password",
-    role: "viewer",
+    user_name: "John Doe",
+    email: "john@example.com",
+    password: bcrypt.hashSync("password"),
+    role: "host",
   },
   {
     id: 2,
-    user_name: "jane smith",
-    email: "jane.smith@example.com",
-    password: "password",
+    user_name: "Squamish Hosts",
+    email: "sh@example.com",
+    password: bcrypt.hashSync("password"),
     role: "host",
   },
   {
     id: 3,
-    user_name: "alex jackson",
-    email: "alex.jackson@example.com",
-    password: "password",
-    role: "viewer",
+    user_name: "The Backyard",
+    email: "backyard@example.com",
+    password: bcrypt.hashSync("password"),
+    role: "host",
   },
 ];
